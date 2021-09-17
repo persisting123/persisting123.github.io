@@ -20,7 +20,7 @@
 			}
 		</style>
 	</head>
-	<body  background="pic/backphoto1.jpg" style="background-repeat: no-repeat;background-size: 100% 100%;">
+	<body  background="backphoto1.jpg" style="background-repeat: no-repeat;background-size: 100% 100%;">
 		<div id="header">
 		<h1 >Welcome to my Website!</h1>
 		</div>
@@ -54,7 +54,7 @@
 				</table>
 				<table align="right">
 				<tr>
-					<td><img src="pic/img_5.jpg" ></td> 
+					<td><img src="img_5.jpg" ></td> 
 				</tr>
 				
 				</table>
@@ -63,10 +63,10 @@
 		<div>
 			<h3 style="color:darkorchid">我的爱好</h3>
 			<ol style="font-size: large;" type="1">
-				<li>看书<img src="pic/img_1.jpg" width="30" height="28">
+				<li>看书<img src="img_1.jpg" width="30" height="28">
 				</li>
-				<li>唱歌<img src="pic/img_2.jpg" width="30" height="28"></li>
-				<li>尤克里里<img src="pic/img_3.jpg" width="30" height="30"></li>
+				<li>唱歌<img src="img_2.jpg" width="30" height="28"></li>
+				<li>尤克里里<img src="img_3.jpg" width="30" height="30"></li>
 			</ol>
 		</div>
 		<div>
