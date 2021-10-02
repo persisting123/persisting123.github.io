@@ -40,6 +40,14 @@ window.onload = function initTriangles(){
     // configure webgl
 	gl.viewport( 0, 0, canvas.width, canvas.height );
 	gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
+	// var num = window.prompt("请输入剖分层次：");
+	// if(num>=0&&num<=7){
+	// 	numTimesToSubdivide = num;
+	// 	document.getElementById("demo").innerHTML = "Level"+num;
+	// }
+	// else{
+	// 	alert("数据不合法，请重新输入！");
+	// } 
 	divideTriangle( u, v, w, numTimesToSubdivide );
 	// load shaders and initialise attribute buffers
 	var program = initShaders( gl, "vertex-shader", "fragment-shader" );
@@ -54,6 +62,7 @@ window.onload = function initTriangles(){
 	var vPosition = gl.getAttribLocation( program, "vPosition" );
 	gl.vertexAttribPointer( vPosition, 3, gl.FLOAT, false, 0, 0 );
 	gl.enableVertexAttribArray( vPosition );
+
 	renderTriangles();
 };
 
@@ -93,5 +102,5 @@ function divideTriangle( a, b, c, count ){
 
 function renderTriangles(){
 	gl.clear( gl.COLOR_BUFFER_BIT );
-	gl.drawArrays( gl.TRIANGLES, 0, points.length/3);
+	gl.drawArrays( gl.TRIANGLES, 0, points.length/3 );
 }
