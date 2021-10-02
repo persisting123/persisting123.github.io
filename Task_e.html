@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+		<title>Test_d</title>
+		<!--顶点着色器-->
+		<script id="vertex-shader" type="x-shader/x-vertex">
+			attribute vec4 vPosition;
+			attribute vec4 vColor;
+			varying vec4 fColor;
+			void main() {
+			   gl_Position = vPosition; 
+			   fColor=vColor;
+			} 
+		</script>
+		<!--片元着色器-->
+		<script id="fragment-shader" type="x-shader/x-fragment">
+			precision mediump float;
+			varying vec4 fColor;
+			void main(){
+			   gl_FragColor = fColor;
+			}
+		</script>
+		<!-- 一组相关的JS库-->
+		<script type="text/javascript" src="js/webgl-utils.js"></script>
+		<script type="text/javascript" src="js/initShaders.js"></script>
+		<script type="text/javascript" src="js/gl-matrix-min.js"></script>
+		<script type="text/javascript" src="js/colorful.js"></script>
+	</head>
+	<body>
+		<p style="text-align: center;">任务d. 将任务c中的三角形和四边形设置为不同的颜色</p>
+	    <canvas id="test" style="border:none;" width="500" height="500"></canvas>
+</html>
