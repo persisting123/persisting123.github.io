@@ -21,10 +21,11 @@ window.onload = function init(){
 	]) ;
 	//颜色坐标值
 	var colors = new Float32Array([
-		//  red, green, blue
+		//  blue, red,green,
+		0.0, 0.0, 1.0 ,1.0,
 		1.0, 0.0, 0.0,1.0,
 		0.0, 1.0, 0.0,1.0,
-		0.0, 0.0, 1.0 ,1.0,
+		
 	]);
 	// Configure WebGL
 	gl.viewport( 0, 0, canvas.width, canvas.height ); //设置视口大小
