@@ -4,6 +4,7 @@ var canvas;
 var gl;
 var points = [];
 var numTimesToSubdivide;
+var angle;
 var num = window.prompt("请输入剖分层次：",0);
 if(num>=0&&num<=7){
 	numTimesToSubdivide = num;
@@ -11,6 +12,15 @@ if(num>=0&&num<=7){
 else{
 	alert("数据不合法，请刷新网页，重新输入！");
 } 
+var d = window.prompt("请输入旋转角度：",0);
+if(d >= 0 && d <= 360){
+	angle = d;
+}
+else{
+	alert("数据不合法，请刷新网页，重新输入！");
+} 
+
+
 window.onload = function initTriangles(){
 	canvas = document.getElementById( "gl-canvas" );
 
@@ -23,9 +33,9 @@ window.onload = function initTriangles(){
 
 	// first, initialise the corners of the gasket with three points.
 	var vertices = [
-		-1, -1,  0,
-		 0,  1,  0,
-		 1, -1,  0
+		0, 0.5,  0,
+		-0.433012701892,  -0.25,  0,
+		0.433012701892,  -0.25,  0,
 	];
 
 	// var u = vec3.create();
@@ -37,10 +47,15 @@ window.onload = function initTriangles(){
 	// var w = vec3.create();
 	// vec3.set( w, 1, -1, 0 );
 	var w = vec3.fromValues( vertices[6], vertices[7], vertices[8] );
+	
+	divideTriangle( u, v, w, numTimesToSubdivide );
+	
+	rotate(angle);
+	
     // configure webgl
 	gl.viewport( 0, 0, canvas.width, canvas.height );
 	gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
-	divideTriangle( u, v, w, numTimesToSubdivide );
+	
 	// load shaders and initialise attribute buffers
 	var program = initShaders( gl, "vertex-shader", "fragment-shader" );
 	gl.useProgram( program );
@@ -56,7 +71,6 @@ window.onload = function initTriangles(){
 	gl.enableVertexAttribArray( vPosition );
 	renderTriangles();
 };
-
 function triangle( a, b, c ){
 	//var k;
 	points.push( a[0], a[1], a[2], b[0], b[1], b[2]);
@@ -69,7 +83,6 @@ function triangle( a, b, c ){
 	// for( k = 0; k < 3; k++ )
 	// 	points.push( c[k] );
 }
-
 function divideTriangle( a, b, c, count ){
 	// check for end of recursion
 	if( count == 0 ){
@@ -91,7 +104,29 @@ function divideTriangle( a, b, c, count ){
 		divideTriangle( ab, ca, bc, count);
 	}
 }
-
+function rotateTriangle(a,angle){
+	var theta = angle * Math.PI / 180.0;
+	theta=theta
+	var x = a[0];
+	var y = a[1];
+	var z = a[2];
+	var x1 = x * Math.cos(theta) + y * Math.sin(theta);
+	var y1 = y * Math.cos(theta) - x * Math.sin(theta);
+	return vec3.fromValues(x1, y1, z);
+}
+function getLength(a,b){
+	var d = Math.sqrt(a * a + b * b);
+	return d;
+}
+function rotate(angle){
+	for(var i = 0;i < points.length;i += 3){
+		var length=getLength(points[i], points[i+1]);
+		var angle2=angle*length/0.5;
+		var p = rotateTriangle(vec3.fromValues(points[i], points[i+1], points[i+2]), angle2);
+		points[i] = p[0];
+		points[i+1] = p[1];
+	}
+}
 function renderTriangles(){
 	gl.clear( gl.COLOR_BUFFER_BIT );
 	gl.drawArrays( gl.LINES, 0, points.length/3);
