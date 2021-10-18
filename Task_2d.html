@@ -24,9 +24,15 @@
 	<script type="text/javascript" src="js/Lab2/gasket-rotate.js"></script>
 </head>
 <body>
-    <p style="text-align:left;">任务d.任务c中剖分后的三角形添加旋转效果。</p>
-	<p>每次输入后，请刷新页面，以便下次输入！</p>
-	<canvas id="gl-canvas" width="600" height="600">你的浏览器不支持HTML5 canvas元素</canvas>
+	<div style="text-align:left;font-size: large;">任务d.任务c中剖分后的三角形添加旋转效果。</div>
+	<div onload="Myinput()">
+	<form name="myInput">
+	剖分层次: <input type="text" value="" name="Count" style="margin-bottom: 5px;" /> <br />
+	旋转角度: <input type="text" value="" name="Angle" style="margin-bottom: 5px;" /> <br />
+	<input type="button" value="确定" style="margin: 5px; " onclick="Myinput()" /> <br />
+	</form>
+	</div>
+	<div id="Triangle"></div>
 	
 </body>
 

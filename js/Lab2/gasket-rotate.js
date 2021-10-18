@@ -5,23 +5,34 @@ var gl;
 var points = [];
 var numTimesToSubdivide;
 var angle;
-var num = window.prompt("请输入剖分层次：",0);
-if(num>=0&&num<=7){
-	numTimesToSubdivide = num;
+function Myinput(){
+	numTimesToSubdivide = parseInt(myInput.Count.value);
+	angle = parseInt(myInput.Angle.value);
+	if(numTimesToSubdivide < 0 || numTimesToSubdivide > 7){
+		document.getElementById("Triangle").innerHTML="数据不合法，请重新输入！";
+		return ;
+	}
+	if(angle < 0 || angle >= 360){
+		document.getElementById("Triangle").innerHTML="数据不合法，请重新输入！";
+		return ;
+	}
+	// <canvas id="gl-canvas" width="512" height="512">你的浏览器不支持HTML5 canvas元素</canvas>
+	document.getElementById("Triangle").innerHTML = "<canvas id=\"gl-canvas\" style=\"border:none;\" width=\"512\" height=\"512\" onclick=\"initTriangles("+numTimesToSubdivide+","+angle+")\"></canvas>";
+	console.log("<canvas id=\"gl-canvas\" style=\"border:none;\" width=\"500\" height=\"500\" onclick=\"initTriangles("+numTimesToSubdivide+","+angle+")\"></canvas>");
+		(() => {
+			// 兼容IE
+			if (document.all) {
+				document.getElementById("gl-canvas").click();
+			}
+			// 兼容其它浏览器
+			else {
+				var e = document.createEvent("MouseEvents");
+				e.initEvent("click", true, true);
+				document.getElementById("gl-canvas").dispatchEvent(e);
+			}
+		})();
 }
-else{
-	alert("数据不合法，请刷新网页，重新输入！");
-} 
-var d = window.prompt("请输入旋转角度：",0);
-if(d >= 0 && d <= 360){
-	angle = d;
-}
-else{
-	alert("数据不合法，请刷新网页，重新输入！");
-} 
-
-
-window.onload = function initTriangles(){
+function initTriangles(num,angle){
 	canvas = document.getElementById( "gl-canvas" );
 
 	gl = WebGLUtils.setupWebGL( canvas );

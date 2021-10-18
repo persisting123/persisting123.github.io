@@ -31,9 +31,14 @@
 </head>
 
 <body>
-   <p style="text-align:left;">任务b.要求在网页上添加交互式控件，输入剖分的层次(0-7),绘制三维效果的Sierpinski Gasket。</p>
-   <p>每次输入后，请刷新页面，以便下次输入！</p>
-   <canvas id="gl-canvas" width="512" height="512">你的浏览器不支持HTML5 canvas元素</canvas>
+	<div style="text-align:left;font-size: large;">任务b.要求在网页上添加交互式控件，输入剖分的层次(0-7),绘制三维效果的Sierpinski Gasket。</div>
+	<div onload="Myinput()">
+	<form name="myInput">
+	剖分层次: <input type="text" value="" name="Count" style="margin-bottom: 5px;" /> 
+	<input type="button" value="确定" style="margin: 5px;" onclick="Myinput()" /> <br />
+	</form>
+	</div>
+	<div id="Triangle"></div>
 </body>
 
 </html>

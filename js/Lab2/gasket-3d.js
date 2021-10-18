@@ -7,16 +7,30 @@ var canvas;
 
 var points = [];
 var colors = [];
-
 var numTimesToSubdivide;
-var num = window.prompt("请输入剖分层次：",0);
-if(num>=0&&num<=7){
-	numTimesToSubdivide = num;
+function Myinput(){
+	numTimesToSubdivide = parseInt(myInput.Count.value);
+	if(numTimesToSubdivide<0||numTimesToSubdivide>7){
+		document.getElementById("Triangle").innerHTML="数据不合法，请重新输入！";
+		return ;
+	}
+	// <canvas id="gl-canvas" width="512" height="512">你的浏览器不支持HTML5 canvas元素</canvas>
+	document.getElementById("Triangle").innerHTML = "<canvas id=\"gl-canvas\" style=\"border:none;\" width=\"512\" height=\"512\" onclick=\"initTriangles("+numTimesToSubdivide+")\"></canvas>";
+	console.log("<canvas id=\"gl-canvas\" style=\"border:none;\" width=\"500\" height=\"500\" onclick=\"initTriangles("+numTimesToSubdivide+")\"></canvas>");
+		(() => {
+			// 兼容IE
+			if (document.all) {
+				document.getElementById("gl-canvas").click();
+			}
+			// 兼容其它浏览器
+			else {
+				var e = document.createEvent("MouseEvents");
+				e.initEvent("click", true, true);
+				document.getElementById("gl-canvas").dispatchEvent(e);
+			}
+		})();
 }
-else{
-	alert("数据不合法，请刷新网页，重新输入！");
-} 
-window.onload = function init() {
+function initTriangles(num){
     canvas = document.getElementById("gl-canvas");
 
     gl = WebGLUtils.setupWebGL(canvas);
@@ -49,7 +63,7 @@ window.onload = function init() {
     // vec3.set(w, vertices[9], vertices[10], vertices[11]);
     var w = vec3.fromValues( vertices[9], vertices[10], vertices[11] );
 
-    divideTetra(t, u, v, w, numTimesToSubdivide);
+    divideTetra(t, u, v, w, num);
 
     // configure webgl
     gl.viewport(0, 0, canvas.width, canvas.height);
