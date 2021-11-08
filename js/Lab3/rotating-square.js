@@ -5,6 +5,15 @@ var gl;
 
 var theta = 0.0;
 var thetaLoc;
+var k=1;//方向系数
+var ss=0.1;
+function inturn(){
+	k*=-1;	
+}
+
+function inspeed(){
+	ss=document.getElementById("speedd").value*Math.PI/4;
+}
 
 function initRotSquare(){
 	canvas = document.getElementById( "rot-canvas" );
@@ -43,10 +52,11 @@ function renderSquare(){
 	gl.clear( gl.COLOR_BUFFER_BIT );
 	
 	// set uniform values
-	theta += 0.1;
+	theta += ss*k;
 	if( theta > 2 * Math.PI )
 		theta -= (2 * Math.PI);
-	
+	else if( theta < -2 * Math.PI )
+		theta += (2 * Math.PI);
 	gl.uniform1f( thetaLoc, theta );
 
 	gl.drawArrays( gl.TRIANGLE_STRIP, 0, 4 );
