@@ -12,7 +12,7 @@ function Myinput(){
 	}
 	// <canvas id="gl-canvas" width="512" height="512">你的浏览器不支持HTML5 canvas元素</canvas>
 	document.getElementById("Triangle").innerHTML = "<canvas id=\"gl-canvas\" style=\"border:none;\" width=\"512\" height=\"512\" onclick=\"initTriangles("+numTimesToSubdivide+")\"></canvas>";
-	console.log("<canvas id=\"gl-canvas\" style=\"border:none;\" width=\"500\" height=\"500\" onclick=\"initTriangles("+numTimesToSubdivide+")\"></canvas>");
+	//console.log("<canvas id=\"gl-canvas\" style=\"border:none;\" width=\"500\" height=\"500\" onclick=\"initTriangles("+numTimesToSubdivide+")\"></canvas>");
 		(() => {
 			// 兼容IE
 			if (document.all) {
@@ -73,6 +73,7 @@ function triangle( a, b, c ){
 	points.push( a[0], a[1], a[2] );
 	points.push( b[0], b[1], b[2] );
 	points.push( c[0], c[1], c[2] );
+	//console.log(points);
 	// for( k = 0; k < 3; k++ )
 	// 	points.push( a[k] );
 	// for( k = 0; k < 3; k++ )
@@ -92,9 +93,7 @@ function divideTriangle( a, b, c, count ){
 		vec3.lerp( bc, b, c, 0.5 );
 		var ca = vec3.create();
 		vec3.lerp( ca, c, a, 0.5 );
-
 		--count;
-
 		// three new triangles
 		divideTriangle( a, ab, ca, count );
 		divideTriangle( b, bc, ab, count );

@@ -3,119 +3,123 @@
 var canvas;
 var gl;
 
-var numVertices = 36;
-
 var points = [];
 var colors = [];
-
-var xAxis = 0;
-var yAxis = 1;
-var zAxis = 2;
-
+// var xAxis = 0;
+// var yAxis = 1;
+// var zAxis = 2;
 var axis = 0;
-var theta = [ 0, 0, 0 ];
-
+var theta = [0, 0, 0];
 var thetaLoc;
 
-var vertices = [
-	-0.5, -0.5,  0.5,
-	-0.5,  0.5,  0.5,
-	 0.5,  0.5,  0.5,
-	 0.5, -0.5,  0.5,
-	-0.5, -0.5, -0.5,
-	-0.5,  0.5, -0.5,
-	 0.5,  0.5, -0.5,
-	 0.5, -0.5, -0.5
-];
+var dis = [0, 0, 0];
+var disLoc;
 
-var vertexColors = [
-	0.0, 0.0, 0.0, 1.0,
-	1.0, 0.0, 0.0, 1.0,
-	1.0, 1.0, 0.0, 1.0,
-	0.0, 1.0, 0.0, 1.0,
-	0.0, 0.0, 1.0, 1.0,
-	1.0, 0.0, 1.0, 1.0,
-	1.0, 1.0, 1.0, 1.0,
-	0.0, 1.0, 1.0, 1.0
-];
 
-var indices = [
-	1, 0, 3,
-	3, 2, 1,
-	2, 3, 7,
-	7, 6, 2,
-	3, 0, 4,
-	4, 7, 3,
-	6, 5, 1,
-	1, 2, 6,
-	4, 5, 6,
-	6, 7, 4,
-	5, 4, 0,
-	0, 1, 5
-];
+window.onload = function initCube() {
+    canvas = document.getElementById("gl-canvas");
 
-window.onload = function initCube(){
-	canvas = document.getElementById( "gl-canvas" );
 
-	gl = WebGLUtils.setupWebGL( canvas );
-	if( !gl ){
-		alert( "WebGL isn't available" );
-	}
+    gl = WebGLUtils.setupWebGL(canvas);
+    if (!gl) {
+        alert("WebGL isn't available");
+    }
 
-	gl.viewport( 0, 0, canvas.width, canvas.height );
-	gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
+    makeCube();
 
-	gl.enable( gl.DEPTH_TEST );
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.clearColor(1.0, 1.0, 1.0, 1.0);
 
-	// load shaders and initialize attribute buffer
-	var program = initShaders( gl, "vertex-shader", "fragment-shader" );
-	gl.useProgram( program );
+    gl.enable(gl.DEPTH_TEST);
 
-	var iBuffer = gl.createBuffer();
-	gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, iBuffer );
-	gl.bufferData( gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(indices), gl.STATIC_DRAW );
+    // load shaders and initialize attribute buffer
+    var program = initShaders(gl, "vertex-shader", "fragment-shader");
+    gl.useProgram(program);
 
-	var cBuffer = gl.createBuffer();
-	gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer );
-	gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( vertexColors ), gl.STATIC_DRAW );
+    var cBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, cBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
 
-	var vColor = gl.getAttribLocation( program, "vColor" );
-	gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
-	gl.enableVertexAttribArray( vColor );
+    var vColor = gl.getAttribLocation(program, "vColor");
+    gl.vertexAttribPointer(vColor, 4, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(vColor);
 
-	var vBuffer = gl.createBuffer();
-	gl.bindBuffer( gl.ARRAY_BUFFER, vBuffer );
-	gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( vertices ), gl.STATIC_DRAW );
+    var vBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW);
 
-	var vPosition = gl.getAttribLocation( program, "vPosition" );
-	gl.vertexAttribPointer( vPosition, 3, gl.FLOAT, false, 0, 0 );
-	gl.enableVertexAttribArray( vPosition );
+    var vPosition = gl.getAttribLocation(program, "vPosition");
+    gl.vertexAttribPointer(vPosition, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(vPosition);
+	//建立顶点着色器中的属性变量与应用程序中相应变量的关联
+    thetaLoc = gl.getUniformLocation(program, "theta");
+	//把应用程序代码中的theta值发送到着色器中
+    gl.uniform3fv(thetaLoc, theta);
+	
+	disLoc = gl.getUniformLocation(program,"dis");
+	gl.uniform3fv(disLoc,dis);
+	
+    document.getElementById("xTrans").onchange = function (event) {
+        dis[0] = event.target.value;
+		console.log(dis[0]);
+    }
 
-	thetaLoc = gl.getUniformLocation( program, "theta" );	
+    document.getElementById("yTrans").onclick = function () {
+        dis[1] = event.target.value;
+    }
 
-	document.getElementById( "xbutton" ).onclick = function(){
-		axis = xAxis;
-	}
+    document.getElementById("zTrans").onclick = function () {
+        dis[2] = event.target.value;
+    }
 
-	document.getElementById( "ybutton" ).onclick = function(){
-		axis = yAxis;
-	}
-
-	document.getElementById( "zbutton" ).onclick = function(){
-		axis = zAxis;
-	}
-
-	render();
+    render();
 }
 
-function render(){
-	gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
+function makeCube() {
+	//立方体的顶点
+    var vertices = [
+        glMatrix.vec4.fromValues(-0.5, -0.5, 0.5, 1.0),
+        glMatrix.vec4.fromValues(-0.5, 0.5, 0.5, 1.0),
+        glMatrix.vec4.fromValues(0.5, 0.5, 0.5, 1.0),
+        glMatrix.vec4.fromValues(0.5, -0.5, 0.5, 1.0),
+        glMatrix.vec4.fromValues(-0.5, -0.5, -0.5, 1.0),
+        glMatrix.vec4.fromValues(-0.5, 0.5, -0.5, 1.0),
+        glMatrix.vec4.fromValues(0.5, 0.5, -0.5, 1.0),
+        glMatrix.vec4.fromValues(0.5, -0.5, -0.5, 1.0),
+    ];
+	//颜色
+    var vertexColors = [
+        glMatrix.vec4.fromValues(0.0, 0.0, 0.0, 1.0),
+        glMatrix.vec4.fromValues(1.0, 0.0, 0.0, 1.0),
+        glMatrix.vec4.fromValues(1.0, 1.0, 0.0, 1.0),
+        glMatrix.vec4.fromValues(0.0, 1.0, 0.0, 1.0),
+        glMatrix.vec4.fromValues(0.0, 0.0, 1.0, 1.0),
+        glMatrix.vec4.fromValues(1.0, 0.0, 1.0, 1.0),
+        glMatrix.vec4.fromValues(0.0, 1.0, 1.0, 1.0),
+        glMatrix.vec4.fromValues(1.0, 1.0, 1.0, 1.0)
+    ];
+	//六个面（由顶点序列定义）
+    var faces = [
+        1, 0, 3, 1, 3, 2, //正；每一面两个三角形；按照逆时针排列
+        2, 3, 7, 2, 7, 6, //右
+        3, 0, 4, 3, 4, 7, //底
+        6, 5, 1, 6, 1, 2, //顶
+        4, 5, 6, 4, 6, 7, //背
+        5, 4, 0, 5, 0, 1  //左
+    ];
 
-	theta[ axis ] += 0.1;
-	gl.uniform3fv( thetaLoc, theta );
+    for (var i = 0; i < faces.length; i++) {
+        points.push(vertices[faces[i]][0], vertices[faces[i]][1], vertices[faces[i]][2]);
 
-	//gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, iBuffer );
-	gl.drawElements( gl.TRIANGLES, numVertices, gl.UNSIGNED_BYTE, 0 );
+        colors.push(vertexColors[Math.floor(i / 6)][0], vertexColors[Math.floor(i / 6)][1], vertexColors[Math.floor(i / 6)][2], vertexColors[Math.floor(i / 6)][3]);
+    }
+}
 
-	requestAnimFrame( render );
+function render() {
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    theta[axis] += 0.1;
+    gl.uniform3fv(thetaLoc, theta);
+	gl.uniform3fv(disLoc, dis);
+    gl.drawArrays(gl.TRIANGLES, 0, points.length / 3);
+    requestAnimFrame(render);
 }

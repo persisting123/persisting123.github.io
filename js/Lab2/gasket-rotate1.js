@@ -121,8 +121,8 @@ function rotateTriangle(a,angle){
 	var x = a[0];
 	var y = a[1];
 	var z = a[2];
-	var x1 = x * Math.cos(theta) + y * Math.sin(theta);
-	var y1 = y * Math.cos(theta) - x * Math.sin(theta);
+	var x1 = x * Math.cos(theta) - y * Math.sin(theta);
+	var y1 = y * Math.cos(theta) + x * Math.sin(theta);
 	return vec3.fromValues(x1, y1, z);
 }
 function getLength(a,b){

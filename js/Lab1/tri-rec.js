@@ -20,12 +20,19 @@ window.onload = function init(){
 		 1.0, -1.0,
 	];*/
 	var vertices = [
-		 0.0,  1.0,
+		/* 0.0,  1.0,
 		-1.0,  0.0,
 		 0.0,  0.0,
 		 0.0, -1.0,
 		 1.0, -1.0,
-		 1.0,  0.0,
+		 1.0,  0.0,*/
+		 -0.25, -0.25,
+		 0.0, 0.25,
+		 0.25, -0.25,
+		 0.5,-0.5,
+		 1.0,-0.5,
+		 1.0,0.5,
+		 0.5,0.5,
 	];
 	
 	// Configure WebGL
@@ -52,5 +59,5 @@ window.onload = function init(){
 function render(){
 	gl.clear(gl.COLOR_BUFFER_BIT);
 	gl.drawArrays(gl.TRIANGLES, 0, 3);
-	gl.drawArrays(gl.TRIANGLE_FAN, 2, 4);
+	gl.drawArrays(gl.TRIANGLE_FAN, 3, 4);
 }

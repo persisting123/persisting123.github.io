@@ -49,8 +49,9 @@ window.onload = function initCube() {
     var vPosition = gl.getAttribLocation(program, "vPosition");
     gl.vertexAttribPointer(vPosition, 3, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vPosition);
-
+	//建立顶点着色器中的属性变量与应用程序中相应变量的关联
     thetaLoc = gl.getUniformLocation(program, "theta");
+	//把应用程序代码中的theta值发送到着色器中
     gl.uniform3fv(thetaLoc, theta);
 
     document.getElementById("xbutton").onclick = function () {
@@ -69,6 +70,7 @@ window.onload = function initCube() {
 }
 
 function makeCube() {
+	//立方体的顶点
     var vertices = [
         glMatrix.vec4.fromValues(-0.5, -0.5, 0.5, 1.0),
         glMatrix.vec4.fromValues(-0.5, 0.5, 0.5, 1.0),
@@ -79,7 +81,7 @@ function makeCube() {
         glMatrix.vec4.fromValues(0.5, 0.5, -0.5, 1.0),
         glMatrix.vec4.fromValues(0.5, -0.5, -0.5, 1.0),
     ];
-
+	//颜色
     var vertexColors = [
         glMatrix.vec4.fromValues(0.0, 0.0, 0.0, 1.0),
         glMatrix.vec4.fromValues(1.0, 0.0, 0.0, 1.0),
@@ -90,7 +92,7 @@ function makeCube() {
         glMatrix.vec4.fromValues(0.0, 1.0, 1.0, 1.0),
         glMatrix.vec4.fromValues(1.0, 1.0, 1.0, 1.0)
     ];
-
+	//六个面（由顶点序列定义）
     var faces = [
         1, 0, 3, 1, 3, 2, //正；每一面两个三角形；按照逆时针排列
         2, 3, 7, 2, 7, 6, //右

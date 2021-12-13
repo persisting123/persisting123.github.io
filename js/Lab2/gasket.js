@@ -77,6 +77,7 @@ function triangle( a, b, c ){
 	points.push( a[0], a[1], a[2], b[0], b[1], b[2]);
 	points.push( b[0], b[1], b[2], c[0], c[1], c[2]);
 	points.push( c[0], c[1], c[2], a[0], a[1], a[2]);
+	console.log(points);
 	// for( k = 0; k < 3; k++ )
 	// 	points.push( a[k] );
 	// for( k = 0; k < 3; k++ )

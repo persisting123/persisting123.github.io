@@ -44,9 +44,9 @@ function initTriangles(num,angle){
 
 	// first, initialise the corners of the gasket with three points.
 	var vertices = [
-		-0.5, -0.5,  0,
-		 0,  0.5,  0,
-		 0.5, -0.5,  0
+		0, 0.5,  0,
+		-0.433012701892,  -0.25,  0,
+		0.433012701892,  -0.25,  0,
 	];
 
 	// var u = vec3.create();
@@ -88,8 +88,8 @@ function rotateTriangle(a,angle){
 	var x = a[0];
 	var y = a[1];
 	var z = a[2];
-	var x1 = x * Math.cos(theta) + y * Math.sin(theta);
-	var y1 = y * Math.cos(theta) - x * Math.sin(theta);
+	var x1 = x * Math.cos(theta) - y * Math.sin(theta);
+	var y1 = y * Math.cos(theta) + x * Math.sin(theta);
 	return vec3.fromValues(x1, y1, z);
 }
 function triangle( a, b, c ){

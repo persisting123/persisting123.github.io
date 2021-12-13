@@ -37,7 +37,7 @@
 						 );
 
 		fColor = vColor;
-		gl_Position = rz * ry * rx * vPosition;
+		gl_Position =rz * ry * rx * vPosition;
 		gl_Position.z = -gl_Position.z;
 	}
 	</script>
@@ -45,7 +45,6 @@
     <script id="rtfshader" type="x-shader/x-fragment">
 	precision mediump float;
 	varying vec4 fColor;
-
 	void main()
 	{
 		gl_FragColor = fColor;

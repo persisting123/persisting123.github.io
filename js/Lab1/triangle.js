@@ -20,8 +20,8 @@ window.onload = function init(){
 		 1.0,  1.0,
 		 0.0, -1.0,
 		 1.0,  1.0,
-		 0.0,  1.0*/
-		 /*-0.5, -0.5,
+		 0.0,  1.0
+		 -0.5, -0.5,
 		 0.0, 0.5,
 		 0.5, -0.5*/
 	];
@@ -48,7 +48,8 @@ window.onload = function init(){
 
 function render(){
 	gl.clear( gl.COLOR_BUFFER_BIT );
+	//gl.drawArrays(gl.LINE_LOOP,0,3);
 	//gl.drawArrays( gl.TRIANGLE_FAN, 0, 4 );
 	gl.drawArrays( gl.TRIANGLES, 0, 3 );
-	//gl.drawArrays( gl.TRIANGLE_FANS, 3, 6 );
+	//gl.drawArrays( gl.TRIANGLE_STRIP, 3, 5 );
 }
