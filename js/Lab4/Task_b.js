@@ -5,9 +5,9 @@ var gl;
 
 var points = [];
 var colors = [];
-// var xAxis = 0;
-// var yAxis = 1;
-// var zAxis = 2;
+var xAxis = 0;
+var yAxis = 1;
+var zAxis = 2;
 var axis = 0;
 var theta = [0, 0, 0];
 var thetaLoc;
@@ -55,6 +55,19 @@ window.onload = function initCube() {
     thetaLoc = gl.getUniformLocation(program, "theta");
 	//把应用程序代码中的theta值发送到着色器中
     gl.uniform3fv(thetaLoc, theta);
+	
+	document.getElementById("xbutton").onclick = function () {
+	    axis = xAxis;
+	}
+	
+	document.getElementById("ybutton").onclick = function () {
+	    axis = yAxis;
+	}
+	
+	document.getElementById("zbutton").onclick = function () {
+	    axis = zAxis;
+	}
+	
 	
 	disLoc = gl.getUniformLocation(program,"dis");
 	gl.uniform3fv(disLoc,dis);
