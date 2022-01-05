@@ -5,34 +5,49 @@
 		<title>
 			Flappy Bird
 		</title>
+		<!--  -->
+		<link rel="stylesheet" href="lib/bootstrap.min.css">
+		<script src="lib/jquery.min.js"></script>
+		<script src="lib/bootstrap.min.js"></script>
+		<!--  -->
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 		<script type="text/javascript" src="lib/three.js"></script>
 		<script type="text/javascript" src="js/Flappy_bird.js"></script>
 	</head>
 	<body>
 		<div class="center-in-center" id="div1" style="display: block;" align="center">
-			<input type="button" value="开始游戏" id="start" onclick="startup()" class="btn1"/>
+			<input type="button" value="开始游戏" id="start" onclick="Loading()" class="btn1" />
 		</div>
 		<div class="center-in-center" id="div2" style="display: none;" align="center">
-			<div class="card">You Are Lost!<br>
-			Game Score:<p id="score"></p>
-			Try Again?
+			<div class="card">You Lost!<br>
+				Game Score:<p id="score"></p>
+				Try Again?
 			</div>
 			<br />
-			<input type="button" value="YES" id="yes" onclick="again()" class="btn2"/> &nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="button" value="NO" id="no" onclick="gameover()" class="btn2"/>
+			<input type="button" value="YES"  onclick="again()" class="btn2" /> &nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="button" value="NO"  onclick="gameover()" class="btn2" />
 		</div>
 		<div class="center-in-center" id="div3" style="display: none;" align="center">
 			<div class="card">Game Over!</div>
 		</div>
 		<div class="center-in-center" id="div4" style="display: none;" align="center">
 			<div class="card">Congratulations!<br>
-			Game Score:<p id="score"></p>
-			Try Again?</div><br />
+				Game Score:<p id="score"></p>
+				Try Again?</div><br />
 			<br />
-			<input type="button" value="YES" id="yes" onclick="again()" class="btn2"/> &nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="button" value="NO" id="no" onclick="gameover()" class="btn2"/>
+			<input type="button" value="YES"  onclick="again()" class="btn2" /> &nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="button" value="NO"  onclick="gameover()" class="btn2" />
 		</div>
-		<div></div>
+		<div class="footer">
+			<div class="progress progress-striped active"
+				style="width: 80%; height: 40px; border-radius: 20px; align: center;">
+				<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+					style="width: 0%;" id="Loading"></div>
+				<div id="LoadingMessage">0% 已完成</div>
+			</div>
+		</div>
+		<div id="bird">
+			
+		</div>
 	</body>
 </html>

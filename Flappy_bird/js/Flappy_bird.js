@@ -8,19 +8,46 @@ var objects = [];
 var totalLen = 0; //所有障碍物的距离
 var score = 0;
 var flag = false;
+var objCnt = 0;
+var totalObj = 103;
+
+var start = true;
+
+function Loading() {
+	var load = document.getElementsByClassName("footer")
+	load[0].style.display = "block";
+	UpdateLoading();
+	init();
+}
+
+function UpdateLoading() {
+	var res = parseInt(objCnt * 100.0 / totalObj);
+	// console.log(res);
+	var loading = document.getElementById("Loading");
+	var LoadingMessage = document.getElementById("LoadingMessage");
+	loading.style.width = res + "%";
+	LoadingMessage.innerHTML = res + "% 已完成";
+	if (res == 100) {
+		startup();
+	}
+}
 
 function startup() {
 	var div1 = document.getElementById("div1");
 	div1.style.display = "none";
 	var div2 = document.getElementById("div2");
 	div2.style.display = "none";
-	init();
+	var load = document.getElementsByClassName("footer")
+	load[0].style.display = "none";
+	// init();
 	animate();
 }
 
 function again() {
 	var div2 = document.getElementById("div2");
 	div2.style.display = "none";
+	var div4 = document.getElementById("div4");
+	div4.style.display = "none";
 	var bird = document.getElementById("bird");
 	bird.style.display = "block";
 	animate();
@@ -35,25 +62,23 @@ function gameover() {
 
 function init() {
 	//添加div块，用作画布
-	container = document.createElement('div');
-	container.id = "bird";
-	document.body.appendChild(container);
+	container = document.getElementById("bird");
 	//
 	document.body.onkeydown = function(event) {
 		var e = event.keyCode;
 		// console.log(e);
 		if (e == 87) { //w
-			py += 10;
+			py += 100;
 		} else if (e == 83) { //s
-			py -= 10;
+			py -= 100;
 		} else if (e == 65) { //a
-			px += 10;
+			px += 100;
 		} else if (e == 68) { //d
-			px -= 10;
+			px -= 100;
 		} else if (e == 90) { //z
-			pz += 10;
+			pz += 100;
 		} else if (e == 88) { //x
-			pz -= 10;
+			pz -= 100;
 		}
 		console.log(px + " " + py + " " + pz);
 	};
@@ -63,7 +88,7 @@ function init() {
 		antialias: true //设置为抗锯齿
 	});
 	renderer.setPixelRatio(window.devicePixelRatio); //设置设备像素比。
-	renderer.setSize(window.innerWidth, window.innerHeight);
+	renderer.setSize(window.innerWidth, window.innerHeight - 10);
 	container.appendChild(renderer.domElement);
 
 	//场景初始化
@@ -74,7 +99,7 @@ function init() {
 	scene.add(light);
 
 	//相机初始化
-	camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 100000);
+	camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 200000);
 	camera.up.set(0, 1, 0);
 	camera.lookAt(new THREE.Vector3(0, 1, 0));
 	camera.rotateY(Math.PI / 2);
@@ -86,6 +111,10 @@ function init() {
 	AddBarrier();
 	//鸟
 	AddBird();
+
+	window.addEventListener('resize', function onWindowResize(event) {
+		renderer.setSize(window.innerWidth, window.innerHeight);
+	}, false);
 }
 
 function AddFloor() {
@@ -101,41 +130,46 @@ function AddFloor() {
 
 	var mesh = new THREE.Mesh(geometry, material);
 	mesh.position.set(0, 0, 0);
-	mesh.translateY(-22500);
+	mesh.translateY(22500);
 	scene.add(mesh);
 	// objects.push(mesh);
+	objCnt++;
+	UpdateLoading();
 }
 
 function AddSkybox() {
 	var directions = ["px", "nx", "py", "ny", "pz", "nz"]; //获取对象
 	var format = ".jpg"; //格式
 	//创建盒子，并设置盒子的大小为
-	var skyGeometry = new THREE.BoxGeometry(100000, 100000, 100000, 7, 7, 7);
+	var skyGeometry = new THREE.BoxGeometry(200000, 200000, 200000, 7, 7, 7);
 	//设置盒子材质
 	var materialArray = [];
 	var ImageUtils = new THREE.TextureLoader();
 	for (var i = 0; i < 6; i++)
 		materialArray.push(new THREE.MeshBasicMaterial({
-			map: THREE.ImageUtils.loadTexture("img/" + directions[i] + format), //将图片纹理贴上
+			map: new THREE.TextureLoader().load("img/" + directions[i] + format), //将图片纹理贴上
 			side: THREE.BackSide /*镜像翻转，如果设置镜像翻转，那么只会看到黑漆漆的一片，因为你身处在盒子的内部，所以一定要设置镜像翻转。*/
 		}));
 	var skyMaterial = new THREE.MultiMaterial(materialArray);
 	var skyBox = new THREE.Mesh(skyGeometry, skyMaterial); //创建一个完整的天空盒，填入几何模型和材质的参数
 	skyBox.rotateX(Math.PI / 2);
-	skyBox.translateY(-22500);
+	skyBox.translateZ(-10000);
 	scene.add(skyBox); //在场景中加入天空盒
+
+	objCnt++;
+	UpdateLoading();
 }
 
 function AddBarrier() {
 	var ImageUtils = new THREE.TextureLoader();
 	for (var i = 1; i <= 100; i++) {
-		var ht = Math.random() * 500;
+		var ht = Math.random() * 500 + 50;
 		var barrier = new THREE.CylinderGeometry(50, 50, ht, 40, 40);
 		barrier.rotateX(Math.PI / 2);
 		var p = parseInt(Math.random() * 10) + 1;
 		// console.log(p);
 		var material = new THREE.MeshBasicMaterial({
-			map: THREE.ImageUtils.loadTexture("img/barrier/" + p + ".jpg")
+			map: new THREE.TextureLoader().load("img/barrier/" + p + ".jpg")
 		});
 		var mesh = new THREE.Mesh(barrier, material);
 
@@ -149,15 +183,18 @@ function AddBarrier() {
 
 		objects.push(mesh);
 
-		barrier = new THREE.CylinderGeometry(50, 50, 500 - ht, 40, 40);
+		barrier = new THREE.CylinderGeometry(50, 50, 600 - ht, 40, 40);
 		barrier.rotateX(Math.PI / 2);
 		mesh = new THREE.Mesh(barrier, material);
 		mesh.position.x = 0;
 		mesh.position.y = totalLen;
-		mesh.position.z = ht + 150 + (450 - ht) / 2;
+		mesh.position.z = ht + 150 + (600 - ht) / 2;
 		scene.add(mesh);
 
 		objects.push(mesh);
+
+		objCnt++;
+		UpdateLoading();
 	}
 }
 
@@ -177,13 +214,9 @@ function AddBird() {
 		birdmesh.position.x = 0;
 		birdmesh.position.y = 0;
 		birdmesh.position.z = 200;
-		birdmesh.scale.set(0.2, 0.2, 0.2);
+		birdmesh.scale.set(0.5, 0.5, 0.5);
 		birdmesh.rotateX(-Math.PI / 2);
 		birdmesh.rotateZ(Math.PI);
-		//放大；
-		birdmesh.scale.x = 0.5;
-		birdmesh.scale.y = 0.5;
-		birdmesh.scale.z = 0.5;
 		scene.add(birdmesh);
 		mixer = new THREE.AnimationMixer(birdmesh);
 		//
@@ -198,6 +231,9 @@ function AddBird() {
 		window.addEventListener('mouseup', function(event) {
 			mixer.clipAction(clip).setDuration(1).play();
 		}, false);
+
+		objCnt++;
+		UpdateLoading();
 	});
 }
 //
@@ -245,14 +281,16 @@ function render() {
 	var intersections3 = raycaster3.intersectObjects(objects);
 	var intersections4 = raycaster4.intersectObjects(objects);
 	var intersections5 = raycaster5.intersectObjects(objects);
+	// console.log(intersections1);
 	//是否检测到
+	// console.log(intersections1);
 	if (intersections1.length > 0) {
 		stop();
 		var bird = document.getElementById("bird");
 		bird.style.display = "none";
 		var div2 = document.getElementById("div2");
 		div2.style.display = "block";
-		console.log("opps:"+score);
+		console.log("opps:" + score);
 		var sco = document.getElementById("score").innerHTML = score;
 		birdmesh.position.y = 0;
 		score = 0;
@@ -268,11 +306,13 @@ function render() {
 		}
 	}
 	//得分及障碍边界判断
+	// console.log(intersections4.length + " " + intersections5.length);
 	if (intersections4.length > 0) { //上方检测到障碍物
 		flag = true;
 	} else if (intersections5.length > 0) { //下方检测到障碍物
 		flag = true;
 	}
+
 	if (intersections4.length == 0 && intersections5.length == 0) {
 		if (flag == true) {
 			score = score + 1;
@@ -281,11 +321,11 @@ function render() {
 		}
 	}
 
-	if (birdmesh.position.z < 10) {
-		birdmesh.position.z = 10;
+	if (birdmesh.position.z < 50) {
+		birdmesh.position.z = 50;
 	}
-	if (birdmesh.position.z > 590) {
-		birdmesh.position.z = 590;
+	if (birdmesh.position.z > 700) {
+		birdmesh.position.z = 700;
 	}
 	mixer.update(0.017);
 	camera.position.set(birdmesh.position.x + px, birdmesh.position.y + py, birdmesh.position.z + pz);
